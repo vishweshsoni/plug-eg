@@ -11,7 +11,7 @@
    Author URI: https://github.com/vishweshsoni
    License:GPL v2 or later
    Text-Domain: plug-eg
- */
+*/
 /*
       This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,3 +29,8 @@
     
     Copyright 2005-2015 Automattic Inc.
  */
+
+
+ if(! defined('ABSPATH')){
+        die;
+ }
