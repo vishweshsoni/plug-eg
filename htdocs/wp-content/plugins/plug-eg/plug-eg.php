@@ -31,6 +31,51 @@
  */
 
 
- if(! defined('ABSPATH')){
-        die;
+//  if(! defined('ABSPATH')){
+//         die;
+//  }
+defined('ABSPATH') or die('hey what are you doing!');
+//This is main Class
+ class PlugEg{
+
+   function __construct() {
+     add_action('init', array($this , 'custom_post_type' ));
+   }
+
+
+  function activate(){
+    //flush rewrite rules
+    //when we change anything it will chnage everytihn by rewriting
+    flush_rewrite_rules();
+  } 
+  
+  
+  function deactivate(){
+
+  }
+
+  
+  function uninstall(){
+
+  }
+
+  function custom_post_type(){
+      register_post_type( 'book',['public'=>true,'label'=>'Books'] );      
+  }
+
  }
+
+ //Check if Class Exis or not
+ if(class_exists('PlugEg')){
+    $plugineg = new PlugEg();
+ }
+
+ //activation
+ //it will triger activate function form our class.
+ register_activation_hook( __FILE__,array($plugineg,'activate'));
+
+ //deactivation
+ //it will triger deactviate function from out class.
+ register_deactivation_hook( __FILE__,array($plugineg,'deactivate'));
+
+ //uninstalltion
