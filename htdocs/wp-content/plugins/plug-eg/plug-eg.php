@@ -44,6 +44,7 @@ defined('ABSPATH') or die('hey what are you doing!');
 
 
   function activate(){
+    $this->custom_post_type();
     //flush rewrite rules
     //when we change anything it will chnage everytihn by rewriting
     flush_rewrite_rules();
@@ -55,9 +56,7 @@ defined('ABSPATH') or die('hey what are you doing!');
   }
 
   
-  function uninstall(){
-
-  }
+  
 
   function custom_post_type(){
       register_post_type( 'book',['public'=>true,'label'=>'Books'] );      
@@ -78,4 +77,4 @@ defined('ABSPATH') or die('hey what are you doing!');
  //it will triger deactviate function from out class.
  register_deactivation_hook( __FILE__,array($plugineg,'deactivate'));
 
- //uninstalltion
+ 
