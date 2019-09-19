@@ -50,13 +50,19 @@ defined('ABSPATH') or die('hey what are you doing!');
     flush_rewrite_rules();
   } 
   
-  
+  function register(){
+      add_action('admin_enqueue_scripts',array($this,'enqueue'));
+     }
+
+
   function deactivate(){
+    flush_rewrite_rules( );
+    }
 
+  function enqueue(){
+      //enque all scripts
+      wp_enqueue_style( 'mypluginstyle', plugins_url( '/assets/mystyle.css', __FILE__ ));
   }
-
-  
-  
 
   function custom_post_type(){
       register_post_type( 'book',['public'=>true,'label'=>'Books'] );      
@@ -67,6 +73,7 @@ defined('ABSPATH') or die('hey what are you doing!');
  //Check if Class Exis or not
  if(class_exists('PlugEg')){
     $plugineg = new PlugEg();
+    $plugineg->register();
  }
 
  //activation
@@ -77,4 +84,5 @@ defined('ABSPATH') or die('hey what are you doing!');
  //it will triger deactviate function from out class.
  register_deactivation_hook( __FILE__,array($plugineg,'deactivate'));
 
+ 
  
