@@ -38,17 +38,29 @@ defined('ABSPATH') or die('hey what are you doing!');
 //This is main Class
  class PlugEg{
 
+    
     function activate(){
-      $this->custom_post_type();
+      require_once plugin_dir_path( __FILE__ ).'/config/plug-eg-activate.php';      
       //flush rewrite rules
-      //when we change anything it will chnage everytihn by rewriting
-      flush_rewrite_rules();
+      //when we change anything it will chnage everytihn by rewriting 
+      PlugEgActivate::activate();
     } 
       
     function register(){
         add_action('admin_enqueue_scripts',array($this,'enqueue'));
-      }
 
+
+        add_action('admin_menu',array($this,'add_admin_pages'));
+
+      }
+    
+    public function add_admin_pages(){
+        add_menu_page('PlugEg','PluginEg','manage_options','plug_eg',array($this,'admin_index'),'dashicons-store',null);
+    }
+
+    public function admin_index(){
+        
+    }
     protected function create_post_type(){
         add_action( 'init',array($this,'custom_post_type'));
     }
@@ -60,23 +72,24 @@ defined('ABSPATH') or die('hey what are you doing!');
     function enqueue(){
         //enque all scripts
         wp_enqueue_style( 'mypluginstyle', plugins_url( '/assets/mystyle.css', __FILE__ ));
+        wp_enqueue_style( 'mypluginscript', plugins_url( '/assets/myscript.js', __FILE__ ));
     }
 
     function custom_post_type(){
         register_post_type( 'book',['public'=>true,'label'=>'Books'] );      
     }
 
+
  }
 
  //Check if Class Exis or not
- if(class_exists('PlugEg')){
+ 
     $plugineg = new PlugEg();
     $plugineg->register();
- }
+ 
 
  //activation
  //it will triger activate function form our class.
- require_once plugin_dir_path( __FILE__ ).'config/plug-eg-activate.php';
  register_activation_hook( __FILE__,array('PlugEgActivate','activate'));
 
  //deactivation
