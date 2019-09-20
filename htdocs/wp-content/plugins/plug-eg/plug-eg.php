@@ -38,7 +38,11 @@ defined('ABSPATH') or die('hey what are you doing!');
 //This is main Class
  class PlugEg{
 
-    
+    public $plugin;
+    function __construct(){
+        $this->plugin = plugin_basename( __FILE__ );
+    }
+
     function activate(){
       require_once plugin_dir_path( __FILE__ ).'/config/plug-eg-activate.php';      
       //flush rewrite rules
@@ -51,23 +55,25 @@ defined('ABSPATH') or die('hey what are you doing!');
 
 
         add_action('admin_menu',array($this,'add_admin_pages'));
+        
+        add_filter("plugin_action_links_$this->plugin",array($this,'settings_links') );
 
       }
-    
+    public function settings_links($links){
+        $settings_link='<a href="admin.php?page=plug_eg">settings</a>';
+        array_push($links,$settings_link);
+        return $links; 
+    }
     public function add_admin_pages(){
-        add_menu_page('PlugEg','PluginEg','manage_options','plug_eg',array($this,'admin_index'),'dashicons-store',null);
+        add_menu_page('PlugEg','PluginEg','manage_options','plug_eg',array($this,'admin_index'),'dashicons-store',110);
     }
 
     public function admin_index(){
-        
+        require_once plugin_dir_path( __FILE__ ).'templates/admin.php';
     }
     protected function create_post_type(){
         add_action( 'init',array($this,'custom_post_type'));
     }
-
-    function deactivate(){
-      flush_rewrite_rules( );
-      }
 
     function enqueue(){
         //enque all scripts
