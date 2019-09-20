@@ -38,35 +38,33 @@ defined('ABSPATH') or die('hey what are you doing!');
 //This is main Class
  class PlugEg{
 
-   function __construct() {
-     add_action('init', array($this , 'custom_post_type' ));
-   }
+    function activate(){
+      $this->custom_post_type();
+      //flush rewrite rules
+      //when we change anything it will chnage everytihn by rewriting
+      flush_rewrite_rules();
+    } 
+      
+    function register(){
+        add_action('admin_enqueue_scripts',array($this,'enqueue'));
+      }
 
-
-  function activate(){
-    $this->custom_post_type();
-    //flush rewrite rules
-    //when we change anything it will chnage everytihn by rewriting
-    flush_rewrite_rules();
-  } 
-  
-  function register(){
-      add_action('admin_enqueue_scripts',array($this,'enqueue'));
-     }
-
-
-  function deactivate(){
-    flush_rewrite_rules( );
+    protected function create_post_type(){
+        add_action( 'init',array($this,'custom_post_type'));
     }
 
-  function enqueue(){
-      //enque all scripts
-      wp_enqueue_style( 'mypluginstyle', plugins_url( '/assets/mystyle.css', __FILE__ ));
-  }
+    function deactivate(){
+      flush_rewrite_rules( );
+      }
 
-  function custom_post_type(){
-      register_post_type( 'book',['public'=>true,'label'=>'Books'] );      
-  }
+    function enqueue(){
+        //enque all scripts
+        wp_enqueue_style( 'mypluginstyle', plugins_url( '/assets/mystyle.css', __FILE__ ));
+    }
+
+    function custom_post_type(){
+        register_post_type( 'book',['public'=>true,'label'=>'Books'] );      
+    }
 
  }
 
@@ -78,11 +76,13 @@ defined('ABSPATH') or die('hey what are you doing!');
 
  //activation
  //it will triger activate function form our class.
- register_activation_hook( __FILE__,array($plugineg,'activate'));
+ require_once plugin_dir_path( __FILE__ ).'config/plug-eg-activate.php';
+ register_activation_hook( __FILE__,array('PlugEgActivate','activate'));
 
  //deactivation
  //it will triger deactviate function from out class.
- register_deactivation_hook( __FILE__,array($plugineg,'deactivate'));
+ require_once plugin_dir_path( __FILE__ ).'config/plug-eg-deactivate.php';
+ register_deactivation_hook( __FILE__,array('PlugEgDeActivate','deactivate'));
 
  
  
