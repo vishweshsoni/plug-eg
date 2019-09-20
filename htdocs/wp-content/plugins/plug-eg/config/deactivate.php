@@ -2,7 +2,8 @@
 /**
  *  @package plug-eg
  */    
-class PlugEgDeActivate{
+namespace config;
+class Deactivate{
         public static function deactivate(){
                 flush_rewrite_rules();
         }

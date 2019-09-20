@@ -35,6 +35,14 @@
 //         die;
 //  }
 defined('ABSPATH') or die('hey what are you doing!');
+
+if(file_exists(dirname(__FILE__).'/vendor/autoload.php')){
+        require_once dirname(__FILE__).'/vendor/autoload.php';
+}
+
+use config\Activate;
+use config\Deactivate;
+use config\admin\Adminpages;
 //This is main Class
  class PlugEg{
 
@@ -44,10 +52,9 @@ defined('ABSPATH') or die('hey what are you doing!');
     }
 
     function activate(){
-      require_once plugin_dir_path( __FILE__ ).'/config/plug-eg-activate.php';      
       //flush rewrite rules
       //when we change anything it will chnage everytihn by rewriting 
-      PlugEgActivate::activate();
+      Activate::activate();
     } 
       
     function register(){
@@ -100,8 +107,8 @@ defined('ABSPATH') or die('hey what are you doing!');
 
  //deactivation
  //it will triger deactviate function from out class.
- require_once plugin_dir_path( __FILE__ ).'config/plug-eg-deactivate.php';
- register_deactivation_hook( __FILE__,array('PlugEgDeActivate','deactivate'));
+ 
+ register_deactivation_hook( __FILE__,array('Deactivate','deactivate'));
 
  
  

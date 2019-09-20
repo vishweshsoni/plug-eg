@@ -1,0 +1,17 @@
+{
+    "name": "plugin/plug-eg",
+    "description": "simple plugin",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "vishwesh",
+            "email": "vishweshsoni@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload":{
+            "psr-4": {"config\\":"./config"}
+    }
+}
